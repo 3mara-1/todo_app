@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:todo_app/core/theme/theme_controler.dart';
 
 class AchievedTasksWidget extends StatelessWidget {
   const AchievedTasksWidget({
@@ -18,8 +19,14 @@ class AchievedTasksWidget extends StatelessWidget {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Color(0xFF282828),
+        color: Theme.of(context).colorScheme.primaryContainer,
         borderRadius: BorderRadius.circular(16),
+        border: BoxBorder.all(
+          color: ThemeControler.isDark()
+              ? Colors.transparent
+              : Color(0xffD1DAD6),
+          width: 1,
+        ),
       ),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -31,19 +38,11 @@ class AchievedTasksWidget extends StatelessWidget {
               children: [
                 Text(
                   'Achieved Tasks',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xffFFFCFC),
-                  ),
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
                 Text(
                   '$totalDoneTasks Out of $totalTask Done',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xffC6C6C6),
-                  ),
+                  style: Theme.of(context).textTheme.titleSmall,
                 ),
               ],
             ),
@@ -65,11 +64,7 @@ class AchievedTasksWidget extends StatelessWidget {
                 ),
                 Text(
                   '${(percent * 100).toInt()}%',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: Color(0xffFFFCFC),
-                  ),
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
               ],
             ),

@@ -1,16 +1,16 @@
 import 'dart:convert';
 import 'dart:ffi';
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:todo_app/core/services/preferences_manager.dart';
 import 'package:todo_app/models/task_model.dart';
 import 'package:todo_app/screens/add_task_screen.dart';
 import 'package:todo_app/widget/achieved_tasks_widget.dart';
 import 'package:todo_app/widget/high_priority_widget.dart';
 import 'package:todo_app/widget/sliver_task_list_widget.dart';
-import 'package:todo_app/widget/task_list_widget.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({super.key});
@@ -25,6 +25,7 @@ class _HomePageState extends State<HomePage> {
   int totalTask = 0;
   int totalDoneTasks = 0;
   double percent = 0;
+  String? userImagePath;
 
   @override
   void initState() {
@@ -35,16 +36,14 @@ class _HomePageState extends State<HomePage> {
   }
 
   _loadUserName() async {
-    final pref = await SharedPreferences.getInstance();
-
     setState(() {
-      username = pref.getString('username');
+      username = PreferencesManager().getString('username');
+      userImagePath = PreferencesManager().getString('user_image');
     });
   }
 
   void _loadTasks() async {
-    final pref = await SharedPreferences.getInstance();
-    final getTask = pref.getString('tasks');
+    final getTask = PreferencesManager().getString('tasks');
     if (getTask != null) {
       final taskAftreDecode = jsonDecode(getTask) as List<dynamic>;
 
@@ -68,9 +67,18 @@ class _HomePageState extends State<HomePage> {
       _calculatePercent();
     });
 
-    final pref = await SharedPreferences.getInstance();
     final taskJson = task.map((e) => e.toJson()).toList();
-    pref.setString('tasks', jsonEncode(taskJson));
+    PreferencesManager().setString('tasks', jsonEncode(taskJson));
+  }
+
+  _deleteTask(int? id) async {
+    setState(() {
+      task.removeWhere((e) => e.id == id);
+      _calculatePercent();
+    });
+
+    final taskJson = task.map((e) => e.toJson()).toList();
+    PreferencesManager().setString('tasks', jsonEncode(taskJson));
   }
 
   @override
@@ -91,28 +99,20 @@ class _HomePageState extends State<HomePage> {
                       CircleAvatar(
                         radius: 25,
                         // backgroundColor: Colors.transparent,
-                        backgroundImage: AssetImage(
-                          'assets/images/profile.png',
-                        ),
+                        backgroundImage: userImagePath == null
+                            ? AssetImage('assets/images/profile.png')
+                            : FileImage(File(userImagePath!)),
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             'Good Evening ,$username',
-                            style: const TextStyle(
-                              color: Color(0xffffffff),
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                            ),
+                            style: Theme.of(context).textTheme.titleMedium,
                           ),
-                          const Text(
+                          Text(
                             'One task at a time.One step closer.',
-                            style: TextStyle(
-                              color: Color(0xffffffff),
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                            ),
+                            style: Theme.of(context).textTheme.titleSmall,
                           ),
                         ],
                       ),
@@ -121,21 +121,13 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(height: 16),
                   Text(
                     'Yuhuu ,Your work Is ',
-                    style: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.w400,
-                      color: Color(0xffFFFCFC),
-                    ),
+                    style: Theme.of(context).textTheme.displayLarge,
                   ),
                   Row(
                     children: [
                       Text(
                         'almost done !  ',
-                        style: TextStyle(
-                          fontSize: 32,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xffFFFCFC),
-                        ),
+                        style: Theme.of(context).textTheme.displayLarge,
                       ),
                       SvgPicture.asset('assets/images/hand.svg'),
                     ],
@@ -161,11 +153,9 @@ class _HomePageState extends State<HomePage> {
                     padding: const EdgeInsets.only(top: 24.0, bottom: 16),
                     child: Text(
                       'My Tasks',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xffFFFCFC),
-                      ),
+                      style: Theme.of(
+                        context,
+                      ).textTheme.displaySmall!.copyWith(fontSize: 20),
                     ),
                   ),
                 ],
@@ -175,10 +165,17 @@ class _HomePageState extends State<HomePage> {
             if (task.isNotEmpty)
               SliverTaskListWidget(
                 task: task,
+
                 onChanged: (bool? value, int? index) async {
                   _doneTask(value, index);
                 },
+                // deleted task()
+                // edited task()
+                onDelete: (id) => _deleteTask(id),
                 emptyMessage: 'No Tasks Available',
+                onEdit: () {
+                  _loadTasks();
+                },
               ),
           ],
         ),

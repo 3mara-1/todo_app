@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:todo_app/core/services/preferences_manager.dart';
 import 'package:todo_app/models/task_model.dart';
 import 'package:todo_app/widget/task_list_widget.dart';
 
@@ -22,8 +22,7 @@ class _TaskesScreenState extends State<TaskesScreen> {
   }
 
   void _loadTasks() async {
-    final pref = await SharedPreferences.getInstance();
-    final getTask = pref.getString('tasks');
+    final getTask = PreferencesManager().getString('tasks');
     if (getTask != null) {
       final taskAftreDecode = jsonDecode(getTask) as List<dynamic>;
 
@@ -34,7 +33,25 @@ class _TaskesScreenState extends State<TaskesScreen> {
             .toList();
       });
     }
-    // print(task);
+  }
+
+  _deleteTask(int? id) async {
+    List<TaskModel> tasks = [];
+    if (id == null) return;
+
+    final finalTask = PreferencesManager().getString('tasks');
+    if (finalTask != null) {
+      final taskAfterDecode = jsonDecode(finalTask) as List<dynamic>;
+      tasks = taskAfterDecode.map((e) => TaskModel.fromJson(e)).toList();
+      tasks.removeWhere((e) => e.id == id);
+
+      setState(() {
+        todoTask.removeWhere((e) => e.id == id);
+      });
+
+      final taskJson = tasks.map((e) => e.toJson()).toList();
+      PreferencesManager().setString('tasks', jsonEncode(taskJson));
+    }
   }
 
   @override
@@ -42,14 +59,12 @@ class _TaskesScreenState extends State<TaskesScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: EdgeInsets.all(18.0),
-          child: Text(
-            'To Do Tasks',
-            style: TextStyle(
-              color: Color(0xFFFFFCFC),
-              fontSize: 20,
-              fontWeight: FontWeight.w400,
+        Center(
+          child: Padding(
+            padding: EdgeInsets.all(18.0),
+            child: Text(
+              'To Do Tasks',
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
           ),
         ),
@@ -63,8 +78,7 @@ class _TaskesScreenState extends State<TaskesScreen> {
                   todoTask[index!].isCompleted = value ?? false;
                 });
 
-                final pref = await SharedPreferences.getInstance();
-                final allData = pref.getString('tasks');
+                final allData = PreferencesManager().getString('tasks');
                 if (allData != null) {
                   List<TaskModel> allDataList = (jsonDecode(allData) as List)
                       .map((e) => TaskModel.fromJson(e))
@@ -73,11 +87,18 @@ class _TaskesScreenState extends State<TaskesScreen> {
                     (e) => e.id == todoTask[index!].id,
                   );
                   allDataList[newIndex] = todoTask[index!];
-                  pref.setString('tasks', jsonEncode(allDataList));
+                  PreferencesManager().setString(
+                    'tasks',
+                    jsonEncode(allDataList),
+                  );
                 }
                 _loadTasks();
               },
               emptyMessage: 'No Taskes',
+              onDelete: (id) => _deleteTask(id),
+              onEdit: () {
+                _loadTasks();
+              },
             ),
           ),
         ),

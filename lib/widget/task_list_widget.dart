@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/core/theme/theme_controler.dart';
+import 'package:todo_app/core/widgets/custom_check_box.dart';
 import 'package:todo_app/models/task_model.dart';
+import 'package:todo_app/widget/custom_task_item.dart';
 
 // ignore: must_be_immutable
 class TaskListWidget extends StatelessWidget {
@@ -7,11 +10,17 @@ class TaskListWidget extends StatelessWidget {
     super.key,
     required this.task,
     required this.onChanged,
+    required this.onDelete,
+    required this.onEdit,
+
     required this.emptyMessage,
   });
 
   final List<TaskModel> task;
   Function(bool?, int?) onChanged;
+  Function(int?) onDelete;
+  Function() onEdit;
+
   final String emptyMessage;
 
   @override
@@ -20,7 +29,7 @@ class TaskListWidget extends StatelessWidget {
         ? Center(
             child: Text(
               emptyMessage,
-              style: TextStyle(fontSize: 14, color: Colors.white),
+              style: Theme.of(context).textTheme.displaySmall,
             ),
           )
         : ListView.separated(
@@ -33,71 +42,13 @@ class TaskListWidget extends StatelessWidget {
             },
 
             itemBuilder: (BuildContext context, int index) {
-              return Container(
-                width: double.infinity,
-                height: 56,
-                decoration: BoxDecoration(
-                  color: Color(0xff282828),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Row(
-                  children: [
-                    SizedBox(width: 8),
-                    Checkbox(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      activeColor: Color(0xff15B86C),
-
-                      value: task[index].isCompleted,
-
-                      onChanged: (value) => onChanged(value, index),
-                    ),
-                    SizedBox(width: 16),
-
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            task[index].taskName,
-                            style: TextStyle(
-                              fontSize: 16,
-                              overflow: TextOverflow.ellipsis,
-                              fontWeight: FontWeight.w400,
-                              color: task[index].isCompleted
-                                  ? Color(0xffA0A0A0)
-                                  : Color(0xffFFFCFC),
-                              decoration: task[index].isCompleted
-                                  ? TextDecoration.lineThrough
-                                  : TextDecoration.none,
-                              decorationColor: Color(0xFFA0A0A0),
-                            ),
-                            maxLines: 1,
-                          ),
-
-                          if (task[index].taskDescription.isNotEmpty)
-                            Text(
-                              task[index].taskDescription,
-                              style: TextStyle(
-                                fontSize: 14,
-                                overflow: TextOverflow.ellipsis,
-
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xffC6C6C6),
-                              ),
-                              maxLines: 1,
-                            ),
-                        ],
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () {},
-                      icon: Icon(Icons.more_vert, color: Colors.white),
-                    ),
-                  ],
-                ),
+              return CustomTaskItem(
+                task: task[index],
+                onChanged: (value) => onChanged(value, index),
+                onDelete: (int? id) => onDelete(id),
+                onEdit: () {
+                  onEdit();
+                },
               );
             },
           );

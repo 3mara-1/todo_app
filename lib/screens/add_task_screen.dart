@@ -1,7 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:todo_app/core/services/preferences_manager.dart';
+import 'package:todo_app/core/widgets/custom_text_form_filed.dart';
 import 'package:todo_app/models/task_model.dart';
 import 'package:todo_app/screens/main_screen.dart';
 
@@ -17,7 +18,8 @@ class _AddTaskState extends State<AddTask> {
 
   final TextEditingController taskNameController = TextEditingController();
 
-  final TextEditingController taskController = TextEditingController();
+  final TextEditingController taskDescriptionController =
+      TextEditingController();
 
   bool isHighPriority = true;
 
@@ -38,72 +40,25 @@ class _AddTaskState extends State<AddTask> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          'Task Name',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xFFFFFCFC),
-                          ),
-                        ),
-                        SizedBox(height: 8),
-
-                        TextFormField(
-                          style: TextStyle(color: Colors.white),
+                        CustomTextFormFiled(
+                          title: 'Task Name',
                           controller: taskNameController,
-                          cursorColor: Color(0xFF15B86C),
+                          hintText: 'Finish UI design for login screen',
                           validator: (String? value) {
                             if (value == null || value.trim().isEmpty) {
                               return 'please inter task name';
                             }
                             return null;
                           },
-
-                          decoration: InputDecoration(
-                            hintText: 'Finish UI design for login screen',
-                            hintStyle: TextStyle(
-                              fontSize: 16,
-                              color: Color(0xFF6D6D6D),
-                            ),
-                            filled: true,
-                            fillColor: Color(0xFF282828),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
-                              borderSide: BorderSide.none,
-                            ),
-                          ),
                         ),
                         SizedBox(height: 20),
-                        Text(
-                          'Task Description',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xFFFFFCFC),
-                          ),
-                        ),
-                        SizedBox(height: 8),
 
-                        TextFormField(
-                          controller: taskController,
-                          style: TextStyle(color: Colors.white),
-                          cursorColor: Color(0xFF15B86C),
-
+                        CustomTextFormFiled(
+                          title: 'Task Description',
+                          controller: taskDescriptionController,
+                          hintText:
+                              'Finish onboarding UI and hand off to devs by Thursday.',
                           maxLines: 5,
-                          decoration: InputDecoration(
-                            hintText:
-                                'Finish onboarding UI and hand off to devs by Thursday.',
-                            hintStyle: TextStyle(
-                              fontSize: 16,
-                              color: Color(0xFF6D6D6D),
-                            ),
-                            filled: true,
-                            fillColor: Color(0xFF282828),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
-                              borderSide: BorderSide.none,
-                            ),
-                          ),
                         ),
                         SizedBox(height: 20),
                         Row(
@@ -111,11 +66,7 @@ class _AddTaskState extends State<AddTask> {
                           children: [
                             Text(
                               'High Priority ',
-                              style: TextStyle(
-                                color: Color(0xffFFFCFC),
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
-                              ),
+                              style: Theme.of(context).textTheme.titleMedium,
                             ),
                             Switch(
                               value: isHighPriority,
@@ -136,9 +87,7 @@ class _AddTaskState extends State<AddTask> {
                 ElevatedButton.icon(
                   onPressed: () async {
                     if (_key.currentState?.validate() ?? false) {
-                      final pref = await SharedPreferences.getInstance();
-
-                      final taskJson = pref.getString('tasks');
+                      final taskJson = PreferencesManager().getString('tasks');
                       List<dynamic> taskList = [];
                       if (taskJson != null) {
                         taskList = jsonDecode(taskJson);
@@ -147,14 +96,13 @@ class _AddTaskState extends State<AddTask> {
                       TaskModel model = TaskModel(
                         id: taskList.length + 1,
                         taskName: taskNameController.text,
-                        taskDescription: taskController.text,
+                        taskDescription: taskDescriptionController.text,
                         isHighPriority: isHighPriority,
                       );
 
                       taskList.add(model.toJson());
                       final taskEncode = jsonEncode(taskList);
-                      await pref.setString('tasks', taskEncode);
-                      print(taskList);
+                      await PreferencesManager().setString('tasks', taskEncode);
 
                       Navigator.push(
                         context,
@@ -171,8 +119,6 @@ class _AddTaskState extends State<AddTask> {
                   ),
                   icon: Icon(Icons.add),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xff15B86C),
-                    foregroundColor: Color(0xffFFFCFC),
                     fixedSize: Size(MediaQuery.of(context).size.width, 40),
                   ),
                 ),

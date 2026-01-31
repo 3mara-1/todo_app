@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:todo_app/constant.dart';
+import 'package:todo_app/core/services/preferences_manager.dart';
+import 'package:todo_app/core/widgets/custom_svg_picture.dart';
+import 'package:todo_app/core/widgets/custom_text_form_filed.dart';
 import 'package:todo_app/screens/main_screen.dart';
-import 'package:todo_app/screens/shared_pref.dart';
 
 class Welcome extends StatelessWidget {
   Welcome({super.key});
@@ -13,111 +14,100 @@ class Welcome extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Row(
-                  spacing: 10,
-                  mainAxisAlignment: MainAxisAlignment.center,
+                SizedBox(height: 0),
 
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SvgPicture.asset(kLogoPath, width: 42, height: 42),
+                    CustomSvgPicture.withoutcolor(
+                      imageSrc: kLogoPath,
+                      width: 42,
+                      height: 42,
+                    ),
                     Text(
                       'Tasky',
-                      style: TextStyle(
-                        color: Color(0xffffffff),
-                        fontSize: 28,
-                        fontWeight: FontWeight.w400,
-                      ),
+                      style: Theme.of(context).textTheme.displayMedium,
                     ),
                   ],
                 ),
-
+                SizedBox(height: 180),
                 Column(
                   children: [
                     Text(
                       'Welcome To Tasky ',
-                      style: TextStyle(
-                        color: Color(0xffffffff),
-                        fontSize: 28,
-                        fontWeight: FontWeight.w400,
-                      ),
+                      style: Theme.of(context).textTheme.displaySmall,
                     ),
+
+                    SizedBox(height: 10),
                     Text(
                       'Your productivity journey starts here. ',
-                      style: TextStyle(
-                        color: Color(0xffffffff),
-                        fontSize: 18,
-                        fontWeight: FontWeight.w400,
-                      ),
+                      style: Theme.of(
+                        context,
+                      ).textTheme.displaySmall!.copyWith(fontSize: 16),
                     ),
                   ],
                 ),
-                SvgPicture.asset(kPanaPath, width: 216, height: 204),
+                SizedBox(height: 24),
+
+                CustomSvgPicture.withoutcolor(
+                  imageSrc: kPanaPath,
+                  width: 216,
+                  height: 204,
+                ),
+                SizedBox(height: 24),
                 Form(
                   key: _key,
                   child: Column(
-                    spacing: 15,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(
-                        "Full Name:",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 344,
-                        child: TextFormField(
-                          controller: namecontroller,
-                          cursorColor: Color(0xffffffff),
-                          style: TextStyle(color: Colors.white),
-                          decoration: InputDecoration(
-                            hintText: 'e.g. Sarah Khalid',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16.0),
-                              borderSide: BorderSide.none,
-                            ),
-                            filled: true,
-                            fillColor: Color(0xff282828),
-                          ),
-                          validator: (String? value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return "please enter your full name";
-                            }
-                            return null;
+                      CustomTextFormFiled(
+                        controller: namecontroller,
+                        title: "Full Name",
+                        hintText: 'e.g. Sarah Khalid',
+                        validator: (value) {
+                          if (value == null || value.trim().isEmpty) {
+                            return "please enter your full name";
                           }
-                        ),
+                          return null;
+                        },
                       ),
+                      SizedBox(height: 24),
                       ElevatedButton(
                         onPressed: () async {
                           if (_key.currentState?.validate() ?? false) {
-                            SharedPref().setUserName(namecontroller.value.text);
+                            await PreferencesManager().setString(
+                              'username',
+                              namecontroller.value.text,
+                            );
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
                                 builder: (BuildContext context) => MainScreen(),
                               ),
                             );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text("please enter valed name "),
+                              ),
+                            );
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xff15B86C),
-                          minimumSize: Size(344, 40),
-                        ),
-                        child: Text(
-                          'Let’s Get Started',
-                          style: TextStyle(
-                            color: Color(0xffffffff),
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
+                          fixedSize: Size(
+                            MediaQuery.of(context).size.width,
+                            40,
                           ),
                         ),
+                        child: Text('Let’s Get Started'),
                       ),
+                      SizedBox(height: 124),
                     ],
                   ),
                 ),
@@ -128,9 +118,4 @@ class Welcome extends StatelessWidget {
       ),
     );
   }
-
-  //  setUserName() async {
-  //     final pref = await SharedPreferences.getInstance();
-  //     await pref.setString('username', namecontroller.value.text);
-  //   }
 }
