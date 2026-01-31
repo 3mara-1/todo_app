@@ -8,8 +8,8 @@ import 'package:todo_app/core/services/preferences_manager.dart';
 import 'package:todo_app/core/theme/theme_controler.dart';
 import 'package:todo_app/core/widgets/custom_svg_picture.dart';
 import 'package:todo_app/main.dart';
-import 'package:todo_app/screens/profil_detials_screen.dart';
-import 'package:todo_app/screens/welcome._screen.dart';
+import 'package:todo_app/features/profile/profil_detials_screen.dart';
+import 'package:todo_app/features/welcome/welcome._screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});

@@ -3,7 +3,7 @@ import 'package:todo_app/constant.dart';
 import 'package:todo_app/core/services/preferences_manager.dart';
 import 'package:todo_app/core/widgets/custom_svg_picture.dart';
 import 'package:todo_app/core/widgets/custom_text_form_filed.dart';
-import 'package:todo_app/screens/main_screen.dart';
+import 'package:todo_app/features/navigation/main_screen.dart';
 
 class Welcome extends StatelessWidget {
   Welcome({super.key});

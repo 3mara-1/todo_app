@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:todo_app/core/theme/theme_controler.dart';
 import 'package:todo_app/core/widgets/custom_check_box.dart';
 import 'package:todo_app/models/task_model.dart';
-import 'package:todo_app/widget/custom_task_item.dart';
+import 'package:todo_app/core/components/custom_task_item.dart';
 
 // ignore: must_be_immutable
 class TaskListWidget extends StatelessWidget {

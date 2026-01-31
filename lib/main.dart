@@ -3,8 +3,8 @@ import 'package:todo_app/core/services/preferences_manager.dart';
 import 'package:todo_app/core/theme/dark_theme.dart';
 import 'package:todo_app/core/theme/light_theme.dart';
 import 'package:todo_app/core/theme/theme_controler.dart';
-import 'package:todo_app/screens/main_screen.dart';
-import 'package:todo_app/screens/welcome._screen.dart';
+import 'package:todo_app/features/navigation/main_screen.dart';
+import 'package:todo_app/features/welcome/welcome._screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

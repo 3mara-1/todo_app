@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/models/task_model.dart';
-import 'package:todo_app/widget/custom_task_item.dart';
+import 'package:todo_app/core/components/custom_task_item.dart';
 
 // ignore: must_be_immutable
 class SliverTaskListWidget extends StatelessWidget {

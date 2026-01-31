@@ -3,17 +3,17 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:todo_app/core/services/preferences_manager.dart';
 import 'package:todo_app/models/task_model.dart';
-import 'package:todo_app/widget/task_list_widget.dart';
+import 'package:todo_app/core/components/task_list_widget.dart';
 
-class TaskesScreen extends StatefulWidget {
-  const TaskesScreen({super.key});
+class TaskCompletedScreen extends StatefulWidget {
+  const TaskCompletedScreen({super.key});
 
   @override
-  State<TaskesScreen> createState() => _TaskesScreenState();
+  State<TaskCompletedScreen> createState() => _TaskCompletedScreenState();
 }
 
-class _TaskesScreenState extends State<TaskesScreen> {
-  List<TaskModel> todoTask = [];
+class _TaskCompletedScreenState extends State<TaskCompletedScreen> {
+  List<TaskModel> completedTask = [];
 
   @override
   void initState() {
@@ -27,9 +27,9 @@ class _TaskesScreenState extends State<TaskesScreen> {
       final taskAftreDecode = jsonDecode(getTask) as List<dynamic>;
 
       setState(() {
-        todoTask = taskAftreDecode
+        completedTask = taskAftreDecode
             .map((e) => TaskModel.fromJson(e))
-            .where((element) => element.isCompleted == false)
+            .where((element) => element.isCompleted == true)
             .toList();
       });
     }
@@ -43,10 +43,10 @@ class _TaskesScreenState extends State<TaskesScreen> {
     if (finalTask != null) {
       final taskAfterDecode = jsonDecode(finalTask) as List<dynamic>;
       tasks = taskAfterDecode.map((e) => TaskModel.fromJson(e)).toList();
-      tasks.removeWhere((e) => e.id == id);
+      tasks.removeWhere((et) => et.id == id);
 
       setState(() {
-        todoTask.removeWhere((e) => e.id == id);
+        completedTask.removeWhere((e) => e.id == id);
       });
 
       final taskJson = tasks.map((e) => e.toJson()).toList();
@@ -61,40 +61,45 @@ class _TaskesScreenState extends State<TaskesScreen> {
       children: [
         Center(
           child: Padding(
-            padding: EdgeInsets.all(18.0),
+            padding: const EdgeInsets.all(18.0),
             child: Text(
-              'To Do Tasks',
+              'Completed Tasks',
               style: Theme.of(context).textTheme.bodyMedium,
             ),
           ),
         ),
+
         Expanded(
           child: Padding(
             padding: EdgeInsets.all(16),
             child: TaskListWidget(
-              task: todoTask,
+              task: completedTask,
               onChanged: (bool? value, int? index) async {
                 setState(() {
-                  todoTask[index!].isCompleted = value ?? false;
+                  completedTask[index!].isCompleted = value ?? false;
                 });
 
                 final allData = PreferencesManager().getString('tasks');
                 if (allData != null) {
-                  List<TaskModel> allDataList = (jsonDecode(allData) as List)
+                  List<TaskModel> allTasklist = (jsonDecode(allData) as List)
                       .map((e) => TaskModel.fromJson(e))
                       .toList();
-                  final int newIndex = allDataList.indexWhere(
-                    (e) => e.id == todoTask[index!].id,
+                  final int newIndex = allTasklist.indexWhere(
+                    (e) => e.id == completedTask[index!].id,
                   );
-                  allDataList[newIndex] = todoTask[index!];
+                  allTasklist[newIndex] = completedTask[index!];
+
                   PreferencesManager().setString(
                     'tasks',
-                    jsonEncode(allDataList),
+                    jsonEncode(allTasklist),
                   );
                 }
                 _loadTasks();
+                // deleted task()
+                // edited task()
               },
-              emptyMessage: 'No Taskes',
+
+              emptyMessage: 'No Completed Taskes',
               onDelete: (id) => _deleteTask(id),
               onEdit: () {
                 _loadTasks();

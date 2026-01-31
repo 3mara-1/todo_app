@@ -7,10 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:todo_app/core/services/preferences_manager.dart';
 import 'package:todo_app/models/task_model.dart';
-import 'package:todo_app/screens/add_task_screen.dart';
-import 'package:todo_app/widget/achieved_tasks_widget.dart';
-import 'package:todo_app/widget/high_priority_widget.dart';
-import 'package:todo_app/widget/sliver_task_list_widget.dart';
+import 'package:todo_app/features/add_task/add_task_screen.dart';
+import 'package:todo_app/features/home/components/achieved_tasks_widget.dart';
+import 'package:todo_app/features/home/components/high_priority_widget.dart';
+import 'package:todo_app/features/home/components/sliver_task_list_widget.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({super.key});

@@ -4,7 +4,7 @@ import 'package:todo_app/core/theme/theme_controler.dart';
 import 'package:todo_app/core/widgets/custom_check_box.dart';
 import 'package:todo_app/core/widgets/custom_svg_picture.dart';
 import 'package:todo_app/models/task_model.dart';
-import 'package:todo_app/screens/high_priority_screen.dart';
+import 'package:todo_app/features/tasks/high_priority_screen.dart';
 
 class HighPriorityWidget extends StatelessWidget {
   HighPriorityWidget({
