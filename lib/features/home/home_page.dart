@@ -5,6 +5,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:todo_app/core/constant/storage_key.dart';
 import 'package:todo_app/core/services/preferences_manager.dart';
 import 'package:todo_app/models/task_model.dart';
 import 'package:todo_app/features/add_task/add_task_screen.dart';
@@ -37,7 +38,7 @@ class _HomePageState extends State<HomePage> {
 
   _loadUserName() async {
     setState(() {
-      username = PreferencesManager().getString('username');
+      username = PreferencesManager().getString(StorageKey.username);
       userImagePath = PreferencesManager().getString('user_image');
     });
   }

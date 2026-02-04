@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:todo_app/constant.dart';
+import 'package:todo_app/core/constant/constant.dart';
+
 
 class Splash extends StatefulWidget {
   const Splash({super.key});

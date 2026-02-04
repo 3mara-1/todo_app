@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/core/constant/storage_key.dart';
 import 'package:todo_app/core/services/preferences_manager.dart';
 import 'package:todo_app/core/widgets/custom_text_form_filed.dart';
 
@@ -71,7 +72,7 @@ class _ProfilDetialsScreenState extends State<ProfilDetialsScreen> {
                   onPressed: () async {
                     if (_key.currentState!.validate()) {
                       await PreferencesManager().setString(
-                        'username',
+                       StorageKey.username,
                         nameController.value.text,
                       );
                       await PreferencesManager().setString(
