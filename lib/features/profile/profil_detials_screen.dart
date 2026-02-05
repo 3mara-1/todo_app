@@ -72,16 +72,15 @@ class _ProfilDetialsScreenState extends State<ProfilDetialsScreen> {
                   onPressed: () async {
                     if (_key.currentState!.validate()) {
                       await PreferencesManager().setString(
-                       StorageKey.username,
+                        StorageKey.username,
                         nameController.value.text,
                       );
                       await PreferencesManager().setString(
-                        'motivation_quate',
+                        StorageKey.motivationQuates,
                         motivationController.value.text,
                       );
                       Navigator.pop(context, true);
                     }
-                    
                   },
                   style: ElevatedButton.styleFrom(
                     fixedSize: Size(MediaQuery.of(context).size.width, 40),

@@ -1,14 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:todo_app/core/constant/storage_key.dart';
 import 'package:todo_app/core/services/preferences_manager.dart';
 import 'package:todo_app/core/theme/theme_controler.dart';
 import 'package:todo_app/core/widgets/custom_svg_picture.dart';
-import 'package:todo_app/main.dart';
 import 'package:todo_app/features/profile/profil_detials_screen.dart';
 import 'package:todo_app/features/welcome/welcome._screen.dart';
 
@@ -31,9 +29,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     setState(() {
       userName = PreferencesManager().getString(StorageKey.username)!;
       motivationQuate =
-          PreferencesManager().getString('motivation_quate') ??
+          PreferencesManager().getString(StorageKey.motivationQuates) ??
           'One task at a time. One step closer.';
-      userImagePath = PreferencesManager().getString('user_image');
+      userImagePath = PreferencesManager().getString(StorageKey.userImage);
       isLoading = false;
     });
   }
@@ -63,7 +61,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
 
-                Center(
+                Center( 
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -179,8 +177,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ListTile(
                   onTap: () async {
                     PreferencesManager().remove(StorageKey.username);
-                    PreferencesManager().remove('motivation_quate');
-                    PreferencesManager().remove('tasks');
+                    PreferencesManager().remove(motivationQuate);
+                    PreferencesManager().remove(StorageKey.userTask);
 
                     Navigator.pushAndRemoveUntil(
                       context,
@@ -209,7 +207,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void _saveImade(XFile file) async {
     final appDir = await getApplicationDocumentsDirectory();
     final newPath = await File(file.path).copy('${appDir.path}/${file.name}');
-    PreferencesManager().setString('user_image', newPath.path);
+    PreferencesManager().setString(StorageKey.userImage, newPath.path);
   }
 
   void _showImageSourceDialoge(

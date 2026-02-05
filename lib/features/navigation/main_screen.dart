@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:todo_app/core/constant/storage_key.dart';
 import 'package:todo_app/features/home/home_page.dart';
 import 'package:todo_app/features/profile/profile_screen.dart';
 import 'package:todo_app/features/tasks/task_completed_screen.dart';
@@ -38,7 +39,7 @@ class _MainScreenState extends State<MainScreen> {
 
           BottomNavigationBarItem(
             icon: _svgPicture('assets/images/task.svg', 1),
-            label: 'Tasks',
+            label: StorageKey.userTask,
           ),
 
           BottomNavigationBarItem(

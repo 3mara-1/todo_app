@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:todo_app/core/constant/storage_key.dart';
 import 'package:todo_app/core/services/preferences_manager.dart';
 import 'package:todo_app/models/task_model.dart';
 import 'package:todo_app/core/components/task_list_widget.dart';
@@ -22,7 +23,7 @@ class _HighPriorityScreenState extends State<HighPriorityScreen> {
   }
 
   void _loadTasks() async {
-    final getTask = PreferencesManager().getString('tasks');
+    final getTask = PreferencesManager().getString(StorageKey.userTask);
     if (getTask != null) {
       final taskAftreDecode = jsonDecode(getTask) as List<dynamic>;
 
@@ -42,14 +43,14 @@ class _HighPriorityScreenState extends State<HighPriorityScreen> {
     });
 
     final taskJson = highPriorityTask.map((e) => e.toJson()).toList();
-    PreferencesManager().setString('tasks', jsonEncode(taskJson));
+    PreferencesManager().setString(StorageKey.userTask, jsonEncode(taskJson));
   }
 
   _deleteTask(int? id) async {
     List<TaskModel> tasks = [];
     if (id == null) return;
 
-    final finalTask = PreferencesManager().getString('tasks');
+    final finalTask = PreferencesManager().getString(StorageKey.userTask);
     if (finalTask != null) {
       final taskAfterDecode = jsonDecode(finalTask) as List<dynamic>;
       tasks = taskAfterDecode.map((e) => TaskModel.fromJson(e)).toList();
@@ -61,7 +62,7 @@ class _HighPriorityScreenState extends State<HighPriorityScreen> {
       });
 
       final taskJson = tasks.map((e) => e.toJson()).toList();
-      PreferencesManager().setString('tasks', jsonEncode(taskJson));
+      PreferencesManager().setString(StorageKey.userTask, jsonEncode(taskJson));
     }
   }
 

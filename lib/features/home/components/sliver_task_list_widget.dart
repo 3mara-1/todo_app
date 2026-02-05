@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todo_app/features/home/home_controller.dart';
 import 'package:todo_app/models/task_model.dart';
 import 'package:todo_app/core/components/custom_task_item.dart';
 
@@ -6,51 +8,47 @@ import 'package:todo_app/core/components/custom_task_item.dart';
 class SliverTaskListWidget extends StatelessWidget {
   SliverTaskListWidget({
     super.key,
-    required this.task,
-    required this.onChanged,
-    required this.onDelete,
-    required this.onEdit,
+ 
 
     required this.emptyMessage,
   });
 
-  final List<TaskModel> task;
-  Function(bool?, int?) onChanged;
-  Function(int?) onDelete;
-  Function() onEdit;
 
   final String emptyMessage;
 
   @override
   Widget build(BuildContext context) {
-    return task.isEmpty
-        ? SliverToBoxAdapter(
-            child: Center(
-              child: Text(
-                emptyMessage,
-                style: Theme.of(context).textTheme.displaySmall,
+    return Consumer<HomeController>(
+      builder: (context,HomeController controller, child) => 
+       controller.task.isEmpty
+          ? SliverToBoxAdapter(
+              child: Center(
+                child: Text(
+                  emptyMessage,
+                  style: Theme.of(context).textTheme.displaySmall,
+                ),
+              ),
+            )
+          : SliverPadding(
+              padding: EdgeInsets.only(bottom: 80),
+              sliver: SliverList.separated(
+                itemCount:controller. task.length,
+                separatorBuilder: (BuildContext context, int index) {
+                  return SizedBox(height: 8);
+                },
+      
+                itemBuilder: (BuildContext context, int index) {
+                  return CustomTaskItem(
+                    task:controller.task[index],
+                    onChanged: (value) => controller.doneTask(value, index),
+                    onDelete: (id) => controller.deleteTask(id),
+                    onEdit: () {
+                      controller.loadTasks();
+                    },
+                  );
+                },
               ),
             ),
-          )
-        : SliverPadding(
-            padding: EdgeInsets.only(bottom: 80),
-            sliver: SliverList.separated(
-              itemCount: task.length,
-              separatorBuilder: (BuildContext context, int index) {
-                return SizedBox(height: 8);
-              },
-
-              itemBuilder: (BuildContext context, int index) {
-                return CustomTaskItem(
-                  task: task[index],
-                  onChanged: (value) => onChanged(value, index),
-                  onDelete: (id) => onDelete(id),
-                  onEdit: () {
-                    onEdit();
-                  },
-                );
-              },
-            ),
-          );
+    );
   }
 }
