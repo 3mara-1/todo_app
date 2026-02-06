@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/core/theme/theme_controler.dart';
-import 'package:todo_app/features/home/home_controller.dart';
+import 'package:todo_app/features/tasks/tasks_controller.dart';
 
 class AchievedTasksWidget extends StatelessWidget {
   const AchievedTasksWidget({
@@ -13,8 +13,8 @@ class AchievedTasksWidget extends StatelessWidget {
  
   @override
   Widget build(BuildContext context) {
-    return Consumer<HomeController>(
-      builder: (context,HomeController value, child) =>
+    return Consumer<TasksController>(
+      builder: (context,TasksController controller,Widget? child) =>
      Container(
         width: double.infinity,
         decoration: BoxDecoration(
@@ -40,7 +40,7 @@ class AchievedTasksWidget extends StatelessWidget {
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                   Text(
-                    '${value.totalDoneTasks} Out of ${value.totalTask} Done',
+                    '${controller.totalDoneTasks} Out of ${controller.totalTask} Done',
                     style: Theme.of(context).textTheme.titleSmall,
                   ),
                 ],
@@ -56,13 +56,13 @@ class AchievedTasksWidget extends StatelessWidget {
                       child: CircularProgressIndicator(
                         valueColor: AlwaysStoppedAnimation(Color(0xff15B86C)),
                         strokeWidth: 4,
-                        value:value.percent,
+                        value:controller.percent,
                         backgroundColor: Color(0xff6D6D6D),
                       ),
                     ),
                   ),
                   Text(
-                    '${(value.percent * 100).toInt()}%',
+                    '${(controller.percent * 100).toInt()}%',
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                 ],

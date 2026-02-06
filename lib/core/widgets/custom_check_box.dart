@@ -6,7 +6,7 @@ class CustomCheckBox extends StatelessWidget {
     required this.isCompleted,
     required this.onChanged,
   });
-  bool? isCompleted;
+  bool isCompleted;
   final Function(bool?) onChanged;
 
   @override

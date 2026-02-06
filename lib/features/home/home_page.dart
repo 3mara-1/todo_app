@@ -1,15 +1,16 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 import 'package:provider/provider.dart';
+import 'package:todo_app/core/widgets/custom_svg_picture.dart';
 
 import 'package:todo_app/features/home/home_controller.dart';
 import 'package:todo_app/features/add_task/add_task_screen.dart';
 import 'package:todo_app/features/home/components/achieved_tasks_widget.dart';
 import 'package:todo_app/features/home/components/high_priority_widget.dart';
 import 'package:todo_app/features/home/components/sliver_task_list_widget.dart';
+import 'package:todo_app/features/tasks/tasks_controller.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({super.key});
@@ -79,7 +80,9 @@ class HomePage extends StatelessWidget {
                           'almost done !  ',
                           style: Theme.of(context).textTheme.displayLarge,
                         ),
-                        SvgPicture.asset('assets/images/hand.svg'),
+                        CustomSvgPicture.withoutcolor(
+                          imageSrc: 'assets/images/hand.svg',
+                        ),
                       ],
                     ),
                     SizedBox(height: 16),
@@ -116,11 +119,13 @@ class HomePage extends StatelessWidget {
                 onPressed: () async {
                   final bool? result = await Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (BuildContext context) => AddTask()),
+                    MaterialPageRoute(
+                      builder: (BuildContext context) => AddTask(),
+                    ),
                   );
 
-                  if (result != null && result ) {
-                    context.read < HomeController>().loadTasks();
+                  if (result != null && result) {
+                    context.read<TasksController>().inti();
                   }
                 },
                 shape: RoundedRectangleBorder(
@@ -129,7 +134,7 @@ class HomePage extends StatelessWidget {
                 label: Text('Add New Task'),
                 icon: Icon(Icons.add),
               );
-            }
+            },
           ),
         ),
       ),

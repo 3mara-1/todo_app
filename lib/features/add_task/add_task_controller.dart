@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+
 import 'package:todo_app/core/constant/storage_key.dart';
 import 'package:todo_app/core/services/preferences_manager.dart';
 import 'package:todo_app/models/task_model.dart';
@@ -16,8 +16,9 @@ class AddTaskController with ChangeNotifier {
 
   bool isHighPriority = true;
 
-  void addTask() async {
+  void addTask(BuildContext context) async {
     if (key.currentState?.validate() ?? false) {
+      print(key.currentState?.validate());
       final taskJson = PreferencesManager().getString(StorageKey.userTask);
       List<dynamic> taskList = [];
       if (taskJson != null) {
@@ -35,9 +36,10 @@ class AddTaskController with ChangeNotifier {
       final taskEncode = jsonEncode(taskList);
       await PreferencesManager().setString(StorageKey.userTask, taskEncode);
 
-      
+      //  notifyListeners();
+    Navigator.pop(context, true);
     }
-    notifyListeners();
+   
   }
 
   toggel(bool value) {

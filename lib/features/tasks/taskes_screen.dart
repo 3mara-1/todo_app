@@ -1,62 +1,19 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_app/core/constant/storage_key.dart';
 import 'package:todo_app/core/services/preferences_manager.dart';
+import 'package:todo_app/features/tasks/tasks_controller.dart';
 import 'package:todo_app/models/task_model.dart';
 import 'package:todo_app/core/components/task_list_widget.dart';
 
-class TaskesScreen extends StatefulWidget {
+class TaskesScreen extends StatelessWidget {
   const TaskesScreen({super.key});
 
   @override
-  State<TaskesScreen> createState() => _TaskesScreenState();
-}
-
-class _TaskesScreenState extends State<TaskesScreen> {
-  List<TaskModel> todoTask = [];
-
-  @override
-  void initState() {
-    super.initState();
-    _loadTasks();
-  }
-
-  void _loadTasks() async {
-    final getTask = PreferencesManager().getString(StorageKey.userTask);
-    if (getTask != null) {
-      final taskAftreDecode = jsonDecode(getTask) as List<dynamic>;
-
-      setState(() {
-        todoTask = taskAftreDecode
-            .map((e) => TaskModel.fromJson(e))
-            .where((element) => element.isCompleted == false)
-            .toList();
-      });
-    }
-  }
-
-  _deleteTask(int? id) async {
-    List<TaskModel> tasks = [];
-    if (id == null) return;
-
-    final finalTask = PreferencesManager().getString(StorageKey.userTask);
-    if (finalTask != null) {
-      final taskAfterDecode = jsonDecode(finalTask) as List<dynamic>;
-      tasks = taskAfterDecode.map((e) => TaskModel.fromJson(e)).toList();
-      tasks.removeWhere((e) => e.id == id);
-
-      setState(() {
-        todoTask.removeWhere((e) => e.id == id);
-      });
-
-      final taskJson = tasks.map((e) => e.toJson()).toList();
-      PreferencesManager().setString(StorageKey.userTask, jsonEncode(taskJson));
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final controller = context.read<TasksController>();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -72,35 +29,19 @@ class _TaskesScreenState extends State<TaskesScreen> {
         Expanded(
           child: Padding(
             padding: EdgeInsets.all(16),
-            child: TaskListWidget(
-              task: todoTask,
-              onChanged: (bool? value, int? index) async {
-                setState(() {
-                  todoTask[index!].isCompleted = value ?? false;
-                });
-
-                final allData = PreferencesManager().getString(
-                  StorageKey.userTask,
+            child: Consumer<TasksController>(
+              builder: (context, TasksController valuecontroller, child) {
+                return TaskListWidget(
+                  task: valuecontroller.todoTasks,
+                  onChanged: ( value,index) async {
+                    controller.doneTask(value,valuecontroller.todoTasks[index!].id);
+                  },
+                  emptyMessage: 'No Taskes',
+                  onDelete: (int ? id) => controller.deleteTask(id),
+                  onEdit: () {
+                    controller.inti();
+                  },
                 );
-                if (allData != null) {
-                  List<TaskModel> allDataList = (jsonDecode(allData) as List)
-                      .map((e) => TaskModel.fromJson(e))
-                      .toList();
-                  final int newIndex = allDataList.indexWhere(
-                    (e) => e.id == todoTask[index!].id,
-                  );
-                  allDataList[newIndex] = todoTask[index!];
-                  PreferencesManager().setString(
-                    StorageKey.userTask,
-                    jsonEncode(allDataList),
-                  );
-                }
-                _loadTasks();
-              },
-              emptyMessage: 'No Taskes',
-              onDelete: (id) => _deleteTask(id),
-              onEdit: () {
-                _loadTasks();
               },
             ),
           ),

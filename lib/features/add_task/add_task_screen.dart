@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/core/widgets/custom_text_form_filed.dart';
@@ -8,12 +6,12 @@ import 'package:todo_app/features/add_task/add_task_controller.dart';
 class AddTask extends StatelessWidget {
   const AddTask({super.key});
 
-
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<AddTaskController>(
       create: (context) => AddTaskController(),
       builder: (context, _) {
+       
         final controller = context.read<AddTaskController>();
         return Scaffold(
           appBar: AppBar(title: Text('New Task')),
@@ -64,14 +62,19 @@ class AddTask extends StatelessWidget {
                                   ).textTheme.titleMedium,
                                 ),
                                 Consumer<AddTaskController>(
-                                  builder: (context,AddTaskController value, child) {
-                                    return Switch(
-                                      value:controller.isHighPriority,
-                                      onChanged: (value) {
-                                        controller.toggel(value);
+                                  builder:
+                                      (
+                                        context,
+                                        AddTaskController value,
+                                        child,
+                                      ) {
+                                        return Switch(
+                                          value: value.isHighPriority,
+                                          onChanged: (value) {
+                                            controller.toggel(value);
+                                          },
+                                        );
                                       },
-                                    );
-                                  },
                                 ),
                               ],
                             ),
@@ -83,8 +86,7 @@ class AddTask extends StatelessWidget {
                     SizedBox(height: 16),
                     ElevatedButton.icon(
                       onPressed: () async {
-                        controller.addTask();
-                        Navigator.pop(context, true);
+                        context.read<AddTaskController>().addTask(context);
                       },
 
                       label: Text(

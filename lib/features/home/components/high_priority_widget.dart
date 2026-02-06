@@ -3,21 +3,16 @@ import 'package:provider/provider.dart';
 import 'package:todo_app/core/theme/theme_controler.dart';
 import 'package:todo_app/core/widgets/custom_check_box.dart';
 import 'package:todo_app/core/widgets/custom_svg_picture.dart';
-import 'package:todo_app/features/home/home_controller.dart';
 import 'package:todo_app/features/tasks/high_priority_screen.dart';
+import 'package:todo_app/features/tasks/tasks_controller.dart';
 
 class HighPriorityWidget extends StatelessWidget {
-  HighPriorityWidget({
-    super.key,
-
-  });
-
-
+  HighPriorityWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Consumer(
-      builder: (context, HomeController controller, child) {
+    return Consumer<TasksController>(
+      builder: (context, TasksController controller, child) {
         final taskList = controller.task;
         return Container(
           width: double.infinity,
@@ -52,39 +47,45 @@ class HighPriorityWidget extends StatelessWidget {
                           ),
                         ),
                       ),
-                      ...taskList.reversed
-                          .where((e) => e.isHighPriority)
-                          .take(4)
-                          .map((element) {
-                            return Row(
-                              children: [
-                                CustomCheckBox(
-                                  isCompleted: element.isCompleted,
-                                  onChanged: (value) {
-                                    final index = taskList.indexWhere(
-                                      (e) => e.id == element.id,
-                                    );
-                                    controller.doneTask(value, index);
-                                    // onChanged(value, index);
-                                  },
-                                ),
-
-                                Flexible(
-                                  child: Text(
-                                    element.taskName,
-                                    style: element.isCompleted
-                                        ? Theme.of(context).textTheme.titleLarge
-                                        : Theme.of(context).textTheme.bodyLarge,
-
-                                    maxLines: 1,
-                                  ),
-                                ),
-                              ],
-                            );
-                          }),
-                    ],
-                  ),
+                       ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: taskList.reversed
+                                  .where((e) => e.isHighPriority)
+                                  .length >
+                              4
+                          ? 4
+                          : taskList.reversed
+                              .where((e) => e.isHighPriority)
+                              .length,
+                      itemBuilder: (BuildContext context, int index) {
+                        final task = taskList.reversed
+                            .where((e) => e.isHighPriority)
+                            .toList()[index];
+                        return Row(
+                          children: [
+                            CustomCheckBox(
+                             isCompleted: task.isCompleted,
+                              onChanged: (bool? value) {
+                                controller.doneTask(value, task.id);
+                              },
+                            ),
+                            Flexible(
+                              child: Text(
+                                task.taskName,
+                                style: task.isCompleted
+                                    ? Theme.of(context).textTheme.titleLarge
+                                    : Theme.of(context).textTheme.titleMedium,
+                                maxLines: 1,
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    )
+                  ],
                 ),
+              ),
                 GestureDetector(
                   onTap: () async {
                     await Navigator.push(
@@ -95,7 +96,7 @@ class HighPriorityWidget extends StatelessWidget {
                         },
                       ),
                     );
-                    controller.loadTasks();
+                    controller.inti();
                   },
                   child: Container(
                     width: 56,
