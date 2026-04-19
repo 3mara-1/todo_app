@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:todo_app/core/constant/app_size.dart';
 
 ThemeData darkTheme = ThemeData(
   useMaterial3: true,
@@ -11,13 +13,13 @@ ThemeData darkTheme = ThemeData(
   snackBarTheme: SnackBarThemeData(
     backgroundColor: Colors.black,
     disabledActionTextColor: Colors.white,
-    contentTextStyle: TextStyle(fontSize: 14, color: Colors.white),
+    contentTextStyle: TextStyle(fontSize: AppSize.f14, color: Colors.white),
   ),
   scaffoldBackgroundColor: Color(0xff181818),
   appBarTheme: AppBarTheme(
     backgroundColor: Color(0xff181818),
     titleTextStyle: TextStyle(
-      fontSize: 20,
+      fontSize: AppSize.f20,
       fontWeight: FontWeight.w400,
       color: Color(0xffFFFCFC),
     ),
@@ -51,53 +53,54 @@ ThemeData darkTheme = ThemeData(
     }),
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
-    style: ButtonStyle(
-      backgroundColor: WidgetStateProperty.all(Color(0xFF15B86C)),
-      foregroundColor: WidgetStateProperty.all(Color(0xffFFFCFC)),
-      textStyle: WidgetStateProperty.all(
-        TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-      ),
+    style: ElevatedButton.styleFrom(
+      backgroundColor: Color(0xFF15B86C),
+      foregroundColor: Color(0xffFFFCFC),
+      textStyle: TextStyle(fontSize: AppSize.f14, fontWeight: FontWeight.w500),
+      minimumSize: Size.fromHeight(AppSize.h40),
     ),
   ),
- textButtonTheme: TextButtonThemeData(
-  style: ButtonStyle(
-    foregroundColor: WidgetStateProperty.all(Color(0xffffffff))
-  )
-
- ),
+  textButtonTheme: TextButtonThemeData(
+    style: ButtonStyle(
+      foregroundColor: WidgetStateProperty.all(Color(0xffffffff)),
+    ),
+  ),
   floatingActionButtonTheme: FloatingActionButtonThemeData(
     backgroundColor: Color(0xFF15B86C),
     foregroundColor: Color(0xffFFFCFC),
-    extendedTextStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+    extendedTextStyle: TextStyle(
+      fontSize: AppSize.f14,
+      fontWeight: FontWeight.w500,
+    ),
   ),
   textTheme: TextTheme(
     displayLarge: TextStyle(
       color: Color(0xffffffff),
-      fontSize: 32,
+      fontSize: AppSize.f32,
       fontWeight: FontWeight.w400,
     ),
     displayMedium: TextStyle(
       color: Color(0xffffffff),
-      fontSize: 28,
+      fontSize: AppSize.f28,
       fontWeight: FontWeight.w400,
     ),
     displaySmall: TextStyle(
       color: Color(0xffffffff),
-      fontSize: 24,
+      fontSize: AppSize.f24,
       fontWeight: FontWeight.w400,
     ),
     titleMedium: TextStyle(
       color: Color(0xffFFFCFC),
-      fontSize: 16,
+      fontSize: AppSize.f16,
       fontWeight: FontWeight.w400,
     ),
     titleSmall: TextStyle(
       color: Color(0xffC6C6C6),
-      fontSize: 14,
+      fontSize: AppSize.f14,
       fontWeight: FontWeight.w400,
     ),
     titleLarge: TextStyle(
-      fontSize: 16,
+      fontSize: AppSize.f16,
       overflow: TextOverflow.ellipsis,
       fontWeight: FontWeight.w400,
       color: Color(0xffA0A0A0),
@@ -105,38 +108,38 @@ ThemeData darkTheme = ThemeData(
       decorationColor: Color(0xFFA0A0A0),
     ),
     bodyLarge: TextStyle(
-      fontSize: 16,
+      fontSize: AppSize.f16,
       overflow: TextOverflow.ellipsis,
       fontWeight: FontWeight.w400,
       color: Color(0xffFFFCFC),
       decoration: TextDecoration.none,
     ),
     bodyMedium: TextStyle(
-      fontSize: 20,
+      fontSize: AppSize.f20,
       overflow: TextOverflow.ellipsis,
       fontWeight: FontWeight.w400,
       color: Color(0xffFFFCFC),
       decoration: TextDecoration.none,
     ),
-    labelMedium: TextStyle(fontSize: 20, color: Color(0xFFFFFFFF)),
+    labelMedium: TextStyle(fontSize: AppSize.f20, color: Color(0xFFFFFFFF)),
   ),
   inputDecorationTheme: InputDecorationTheme(
-    hintStyle: TextStyle(fontSize: 16, color: Color(0xFF6D6D6D)),
+    hintStyle: TextStyle(fontSize: AppSize.f16, color: Color(0xFF6D6D6D)),
     filled: true,
     fillColor: Color(0xFF282828),
     border: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(AppSize.r16),
       borderSide: BorderSide.none,
     ),
 
     errorBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(AppSize.r16),
       borderSide: BorderSide(color: Colors.red, width: 0.5),
     ),
   ),
   checkboxTheme: CheckboxThemeData(
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-    side: BorderSide(color: Color(0xFF6E6E6E), width: 2),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppSize.r4)),
+    side: BorderSide(color: Color(0xFF6E6E6E), width: 2.w),
   ),
   iconTheme: IconThemeData(color: Color(0xffFFFCFC)),
   dividerTheme: DividerThemeData(color: Color(0xFFCAC4D0)),
@@ -150,8 +153,14 @@ ThemeData darkTheme = ThemeData(
     backgroundColor: Color(0xff181818),
     selectedItemColor: Color(0xff15B86C),
     unselectedItemColor: Color(0xFFC6C6C6),
-    selectedLabelStyle: TextStyle(fontSize: 14, color: Color(0xFF15B86C)),
-    unselectedLabelStyle: TextStyle(fontSize: 14, color: Color(0xFFC6C6C6)),
+    selectedLabelStyle: TextStyle(
+      fontSize: AppSize.f14,
+      color: Color(0xFF15B86C),
+    ),
+    unselectedLabelStyle: TextStyle(
+      fontSize: AppSize.f14,
+      color: Color(0xFFC6C6C6),
+    ),
   ),
   splashFactory: NoSplash.splashFactory,
   popupMenuTheme: PopupMenuThemeData(
@@ -159,8 +168,8 @@ ThemeData darkTheme = ThemeData(
     shadowColor: Color(0xff15B86C),
     color: Color(0xff181818),
     shape: RoundedRectangleBorder(
-      side: BorderSide(color: Color(0xff15B86C), width: 1),
-      borderRadius: BorderRadius.circular(16),
+      side: BorderSide(color: Color(0xff15B86C), width: 1.w),
+      borderRadius: BorderRadius.circular(AppSize.r16),
     ),
   ),
 );

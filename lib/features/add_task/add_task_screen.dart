@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_app/core/constant/app_size.dart';
 import 'package:todo_app/core/widgets/custom_text_form_filed.dart';
 import 'package:todo_app/features/add_task/add_task_controller.dart';
 
@@ -11,15 +12,14 @@ class AddTask extends StatelessWidget {
     return ChangeNotifierProvider<AddTaskController>(
       create: (context) => AddTaskController(),
       builder: (context, _) {
-       
         final controller = context.read<AddTaskController>();
         return Scaffold(
           appBar: AppBar(title: Text('New Task')),
           body: SafeArea(
             child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16.0,
-                vertical: 8.0,
+              padding: EdgeInsets.symmetric(
+                horizontal: AppSize.w16,
+                vertical: AppSize.h8,
               ),
               child: Form(
                 key: controller.key,
@@ -42,7 +42,7 @@ class AddTask extends StatelessWidget {
                                 return null;
                               },
                             ),
-                            SizedBox(height: 20),
+                            SizedBox(height: AppSize.h20),
 
                             CustomTextFormFiled(
                               title: 'Task Description',
@@ -51,7 +51,7 @@ class AddTask extends StatelessWidget {
                                   'Finish onboarding UI and hand off to devs by Thursday.',
                               maxLines: 5,
                             ),
-                            SizedBox(height: 20),
+                            SizedBox(height: AppSize.h20),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -83,7 +83,7 @@ class AddTask extends StatelessWidget {
                       ),
                     ),
                     // Spacer(),
-                    SizedBox(height: 16),
+                    SizedBox(height: AppSize.h16),
                     ElevatedButton.icon(
                       onPressed: () async {
                         context.read<AddTaskController>().addTask(context);
@@ -92,14 +92,11 @@ class AddTask extends StatelessWidget {
                       label: Text(
                         'Add task',
                         style: TextStyle(
-                          fontSize: 14,
+                          fontSize: AppSize.f14,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                       icon: Icon(Icons.add),
-                      style: ElevatedButton.styleFrom(
-                        fixedSize: Size(MediaQuery.of(context).size.width, 40),
-                      ),
                     ),
                   ],
                 ),

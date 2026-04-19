@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:todo_app/core/constant/app_size.dart';
 import 'package:todo_app/core/constant/storage_key.dart';
 import 'package:todo_app/core/enums/popup_items_enum.dart';
 import 'package:todo_app/core/services/preferences_manager.dart';
@@ -28,9 +29,9 @@ class CustomTaskItem extends StatelessWidget {
       height: 56,
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.primaryContainer,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppSize.r16),
         border: BoxBorder.all(
-          color: ThemeControler.isDark()
+          color: ThemeController.isDark()
               ? Colors.transparent
               : Color(0xffD1DAD6),
           width: 1,
@@ -38,10 +39,10 @@ class CustomTaskItem extends StatelessWidget {
       ),
       child: Row(
         children: [
-          SizedBox(width: 8),
+          SizedBox(width: AppSize.w8),
           Checkbox(
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(4),
+              borderRadius: BorderRadius.circular(AppSize.r4),
             ),
             activeColor: Color(0xff15B86C),
 
@@ -91,7 +92,7 @@ class CustomTaskItem extends StatelessWidget {
             },
             icon: Icon(
               Icons.more_vert,
-              color: ThemeControler.isDark()
+              color: ThemeController.isDark()
                   ? (task.isCompleted ? Color(0xffA0A0A0) : Color(0xffC6C6C6))
                   : (task.isCompleted ? Color(0xff6A6A6A) : Color(0xff3A4640)),
             ),
@@ -143,7 +144,7 @@ class CustomTaskItem extends StatelessWidget {
                         return null;
                       },
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(height: AppSize.h20),
 
                     CustomTextFormFiled(
                       title: 'Task Description',
@@ -152,7 +153,7 @@ class CustomTaskItem extends StatelessWidget {
                           'Finish onboarding UI and hand off to devs by Thursday.',
                       maxLines: 5,
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(height: AppSize.h20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -212,9 +213,6 @@ class CustomTaskItem extends StatelessWidget {
                         // style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
                       ),
                       icon: Icon(Icons.edit),
-                      style: ElevatedButton.styleFrom(
-                        fixedSize: Size(MediaQuery.of(context).size.width, 40),
-                      ),
                     ),
                   ],
                 ),

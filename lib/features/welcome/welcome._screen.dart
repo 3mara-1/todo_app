@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:todo_app/core/constant/app_size.dart';
 
 import 'package:todo_app/core/constant/constant.dart';
 import 'package:todo_app/core/constant/storage_key.dart';
@@ -18,27 +20,28 @@ class Welcome extends StatelessWidget {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
+            padding: EdgeInsets.symmetric(horizontal: AppSize.h16),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(height: 0),
+                SizedBox(height: AppSize.h30),
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     CustomSvgPicture.withoutcolor(
                       imageSrc: kLogoPath,
-                      width: 42,
-                      height: 42,
+                      width: AppSize.w40,
+                      height: AppSize.h40,
                     ),
+                    SizedBox(width: AppSize.w4),
                     Text(
                       'Tasky',
                       style: Theme.of(context).textTheme.displayMedium,
                     ),
                   ],
                 ),
-                SizedBox(height: 180),
+                SizedBox(height: AppSize.h108),
                 Column(
                   children: [
                     Text(
@@ -46,23 +49,23 @@ class Welcome extends StatelessWidget {
                       style: Theme.of(context).textTheme.displaySmall,
                     ),
 
-                    SizedBox(height: 10),
+                    SizedBox(height: AppSize.h12),
                     Text(
                       'Your productivity journey starts here. ',
                       style: Theme.of(
                         context,
-                      ).textTheme.displaySmall!.copyWith(fontSize: 16),
+                      ).textTheme.displaySmall!.copyWith(fontSize: AppSize.f16),
                     ),
                   ],
                 ),
-                SizedBox(height: 24),
+                SizedBox(height: AppSize.h24),
 
                 CustomSvgPicture.withoutcolor(
                   imageSrc: kPanaPath,
-                  width: 216,
-                  height: 204,
+                  width: AppSize.w216,
+                  height: AppSize.h204,
                 ),
-                SizedBox(height: 24),
+                SizedBox(height: AppSize.h24),
                 Form(
                   key: _key,
                   child: Column(
@@ -79,12 +82,12 @@ class Welcome extends StatelessWidget {
                           return null;
                         },
                       ),
-                      SizedBox(height: 24),
+                      SizedBox(height: AppSize.w24),
                       ElevatedButton(
                         onPressed: () async {
                           if (_key.currentState?.validate() ?? false) {
                             await PreferencesManager().setString(
-                             StorageKey.username,
+                              StorageKey.username,
                               namecontroller.value.text,
                             );
                             Navigator.pushReplacement(
@@ -101,15 +104,10 @@ class Welcome extends StatelessWidget {
                             );
                           }
                         },
-                        style: ElevatedButton.styleFrom(
-                          fixedSize: Size(
-                            MediaQuery.of(context).size.width,
-                            40,
-                          ),
-                        ),
+
                         child: Text('Let’s Get Started'),
                       ),
-                      SizedBox(height: 124),
+                      SizedBox(height: AppSize.h124),
                     ],
                   ),
                 ),

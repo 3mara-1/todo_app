@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_app/core/constant/app_size.dart';
 import 'package:todo_app/features/tasks/tasks_controller.dart';
 import 'package:todo_app/core/components/custom_task_item.dart';
 
 // ignore: must_be_immutable
 class SliverTaskListWidget extends StatelessWidget {
-  SliverTaskListWidget({super.key, required this.emptyMessage});
+  const SliverTaskListWidget({super.key, required this.emptyMessage});
 
   final String emptyMessage;
 
@@ -13,7 +14,7 @@ class SliverTaskListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<TasksController>(
       builder: (context, TasksController controller, child) {
-          final tasksList = controller.task;
+        final tasksList = controller.task;
         return tasksList.isEmpty
             ? SliverToBoxAdapter(
                 child: Center(
@@ -24,20 +25,18 @@ class SliverTaskListWidget extends StatelessWidget {
                 ),
               )
             : SliverPadding(
-                padding: EdgeInsets.only(bottom: 80),
+                padding: EdgeInsets.only(bottom: AppSize.h80),
                 sliver: SliverList.separated(
                   itemCount: tasksList.length,
                   separatorBuilder: (BuildContext context, int index) {
-                    return SizedBox(height: 8);
+                    return SizedBox(height: AppSize.h8);
                   },
 
                   itemBuilder: (BuildContext context, int index) {
                     return CustomTaskItem(
-                      task:tasksList[index],
-                      onChanged: (bool? value) => controller.doneTask(
-                        value,
-                       tasksList[index].id,
-                      ),
+                      task: tasksList[index],
+                      onChanged: (bool? value) =>
+                          controller.doneTask(value, tasksList[index].id),
 
                       onDelete: (id) => controller.deleteTask(id),
                       onEdit: () {
@@ -49,6 +48,5 @@ class SliverTaskListWidget extends StatelessWidget {
               );
       },
     );
-  
   }
 }

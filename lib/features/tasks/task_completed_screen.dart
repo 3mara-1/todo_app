@@ -1,7 +1,7 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_app/core/constant/app_size.dart';
 import 'package:todo_app/features/tasks/tasks_controller.dart';
 import 'package:todo_app/core/components/task_list_widget.dart';
 
@@ -16,7 +16,7 @@ class TaskCompletedScreen extends StatelessWidget {
       children: [
         Center(
           child: Padding(
-            padding: const EdgeInsets.all(18.0),
+            padding: EdgeInsets.all(AppSize.w16),
             child: Text(
               'Completed Tasks',
               style: Theme.of(context).textTheme.bodyMedium,
@@ -26,13 +26,16 @@ class TaskCompletedScreen extends StatelessWidget {
 
         Expanded(
           child: Padding(
-            padding: EdgeInsets.all(16),
+            padding: EdgeInsets.all(AppSize.w16),
             child: Consumer<TasksController>(
               builder: (context, TasksController valuecontroller, child) {
                 return TaskListWidget(
                   task: valuecontroller.completeTask,
-                  onChanged: ( value,  index) async {
-                    controller.doneTask(value,valuecontroller.completeTask[index!].id);
+                  onChanged: (value, index) async {
+                    controller.doneTask(
+                      value,
+                      valuecontroller.completeTask[index!].id,
+                    );
                   },
 
                   emptyMessage: 'No Completed Taskes',

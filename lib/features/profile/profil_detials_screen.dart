@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/core/constant/app_size.dart';
 import 'package:todo_app/core/constant/storage_key.dart';
 import 'package:todo_app/core/services/preferences_manager.dart';
 import 'package:todo_app/core/widgets/custom_text_form_filed.dart';
 
 class ProfilDetialsScreen extends StatefulWidget {
-  ProfilDetialsScreen({
+ const ProfilDetialsScreen({
     super.key,
     required this.userName,
     required this.motivationQuate,
@@ -35,7 +36,7 @@ class _ProfilDetialsScreenState extends State<ProfilDetialsScreen> {
       appBar: AppBar(title: Text('User Details')),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding:  EdgeInsets.all(AppSize.w16),
           child: Form(
             key: _key,
             child: Column(
@@ -53,7 +54,7 @@ class _ProfilDetialsScreenState extends State<ProfilDetialsScreen> {
                           }
                         },
                       ),
-                      SizedBox(height: 20),
+                      SizedBox(height: AppSize.h20),
                       CustomTextFormFiled(
                         controller: motivationController,
                         validator: (value) {
@@ -82,14 +83,11 @@ class _ProfilDetialsScreenState extends State<ProfilDetialsScreen> {
                       Navigator.pop(context, true);
                     }
                   },
-                  style: ElevatedButton.styleFrom(
-                    fixedSize: Size(MediaQuery.of(context).size.width, 40),
-                  ),
 
                   child: Text(
                     'Save Changes',
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize:AppSize.f14,
                       color: Color(0xffFFFCFC),
                       fontWeight: FontWeight.w500,
                     ),

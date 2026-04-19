@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/core/constant/storage_key.dart';
 import 'package:todo_app/core/services/preferences_manager.dart';
@@ -14,7 +15,7 @@ void main() async {
 
   await PreferencesManager().init();
   // PreferencesManager().clear();
-  ThemeControler().init();
+  ThemeController().init();
   String? username = PreferencesManager().getString(StorageKey.username);
 
   runApp(Taskly(user: username));
@@ -27,16 +28,22 @@ class Taskly extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<ThemeMode>(
-      valueListenable: ThemeControler.themeNotifier,
+      valueListenable: ThemeController.themeNotifier,
       builder: (context, ThemeMode thememode, Widget? child) {
         return ChangeNotifierProvider<TasksController>(
-          create: (_) =>TasksController()..inti() ,
-          child: MaterialApp(
-            debugShowCheckedModeBanner: false,
-            theme: lightTheme,
-            darkTheme: darkTheme,
-            themeMode: thememode,
-            home: user == null ? Welcome() : MainScreen(),
+          create: (_) => TasksController()..inti(),
+          child: ScreenUtilInit(
+            designSize: const Size(375, 809),
+            minTextAdapt: true,
+            builder: (cxt, _) {
+              return MaterialApp(
+                debugShowCheckedModeBanner: false,
+                theme: lightTheme,
+                darkTheme: darkTheme,
+                themeMode: thememode,
+                home: user == null ? Welcome() : MainScreen(),
+              );
+            },
           ),
         );
       },

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
+import 'package:todo_app/core/constant/app_size.dart';
 import 'package:todo_app/core/widgets/custom_svg_picture.dart';
 
 import 'package:todo_app/features/home/home_controller.dart';
@@ -20,7 +21,7 @@ class HomePage extends StatelessWidget {
 
       child: Scaffold(
         body: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(AppSize.w16),
           child: CustomScrollView(
             slivers: [
               SliverToBoxAdapter(
@@ -37,7 +38,7 @@ class HomePage extends StatelessWidget {
                           builder:
                               (context, String? userImagePath, Widget? child) =>
                                   CircleAvatar(
-                                    radius: 25,
+                                    radius: AppSize.r24,
 
                                     backgroundImage: userImagePath == null
                                         ? AssetImage(
@@ -59,6 +60,7 @@ class HomePage extends StatelessWidget {
                                         style: Theme.of(
                                           context,
                                         ).textTheme.titleMedium,
+                                        maxLines: 1,
                                       ),
                             ),
                             Text(
@@ -69,7 +71,7 @@ class HomePage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(height: 16),
+                    SizedBox(height: AppSize.h16),
                     Text(
                       'Yuhuu ,Your work Is ',
                       style: Theme.of(context).textTheme.displayLarge,
@@ -85,18 +87,20 @@ class HomePage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(height: 16),
+                    SizedBox(height: AppSize.h16),
                     AchievedTasksWidget(),
-                    SizedBox(height: 16),
+                    SizedBox(height: AppSize.h16),
                     HighPriorityWidget(),
 
                     Padding(
-                      padding: const EdgeInsets.only(top: 24.0, bottom: 16),
+                      padding: EdgeInsets.only(
+                        top: AppSize.w24,
+                        bottom: AppSize.h16,
+                      ),
                       child: Text(
                         'My Tasks',
-                        style: Theme.of(
-                          context,
-                        ).textTheme.displaySmall!.copyWith(fontSize: 20),
+                        style: Theme.of(context).textTheme.displaySmall!
+                            .copyWith(fontSize: AppSize.f20),
                       ),
                     ),
                   ],
@@ -110,7 +114,7 @@ class HomePage extends StatelessWidget {
         ),
 
         floatingActionButton: SizedBox(
-          height: 40,
+          height: AppSize.h40,
           child: Builder(
             builder: (context) {
               return FloatingActionButton.extended(
@@ -129,7 +133,7 @@ class HomePage extends StatelessWidget {
                   }
                 },
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(100),
+                  borderRadius: BorderRadius.circular(AppSize.r100),
                 ),
                 label: Text('Add New Task'),
                 icon: Icon(Icons.add),

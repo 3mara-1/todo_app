@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:todo_app/core/constant/app_size.dart';
 
 ThemeData lightTheme = ThemeData(
   useMaterial3: true,
@@ -12,7 +14,7 @@ ThemeData lightTheme = ThemeData(
   appBarTheme: AppBarTheme(
     backgroundColor: Color(0xffF6F7F9),
     titleTextStyle: TextStyle(
-      fontSize: 20,
+      fontSize: AppSize.f20,
       fontWeight: FontWeight.w400,
       color: Color(0xff161F1B),
     ),
@@ -45,49 +47,53 @@ ThemeData lightTheme = ThemeData(
       return 2;
     }),
   ),
+
   elevatedButtonTheme: ElevatedButtonThemeData(
-    style: ButtonStyle(
-      backgroundColor: WidgetStateProperty.all(Color(0xFF15B86C)),
-      foregroundColor: WidgetStateProperty.all(Color(0xffFFFCFC)),
-      textStyle: WidgetStateProperty.all(
-        TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-      ),
+    style: ElevatedButton.styleFrom(
+      backgroundColor: Color(0xFF15B86C),
+      foregroundColor: Color(0xffFFFCFC),
+      textStyle: TextStyle(fontSize: AppSize.f14, fontWeight: FontWeight.w500),
+      minimumSize: Size.fromHeight(AppSize.h40),
     ),
   ),
+
   floatingActionButtonTheme: FloatingActionButtonThemeData(
     backgroundColor: Color(0xFF15B86C),
     foregroundColor: Color(0xffFFFCFC),
-    extendedTextStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+    extendedTextStyle: TextStyle(
+      fontSize: AppSize.f14,
+      fontWeight: FontWeight.w500,
+    ),
   ),
 
   textTheme: TextTheme(
     displayLarge: TextStyle(
       color: Color(0xff161F1B),
-      fontSize: 32,
+      fontSize: AppSize.f32,
       fontWeight: FontWeight.w400,
     ),
     displayMedium: TextStyle(
       color: Color(0xff161F1B),
-      fontSize: 28,
+      fontSize: AppSize.f28,
       fontWeight: FontWeight.w400,
     ),
     displaySmall: TextStyle(
       color: Color(0xff161F1B),
-      fontSize: 24,
+      fontSize: AppSize.f24,
       fontWeight: FontWeight.w400,
     ),
     titleMedium: TextStyle(
       color: Color(0xff161F1B),
-      fontSize: 16,
+      fontSize: AppSize.f16,
       fontWeight: FontWeight.w400,
     ),
     titleSmall: TextStyle(
       color: Color(0xff3A4640),
-      fontSize: 14,
+      fontSize: AppSize.f14,
       fontWeight: FontWeight.w400,
     ),
     titleLarge: TextStyle(
-      fontSize: 14,
+      fontSize: AppSize.f14,
       overflow: TextOverflow.ellipsis,
       fontWeight: FontWeight.w400,
       color: Color(0xff6A6A6A),
@@ -95,50 +101,52 @@ ThemeData lightTheme = ThemeData(
       decorationColor: Color(0xFF49454F),
     ),
     bodyLarge: TextStyle(
-      fontSize: 14,
+      fontSize: AppSize.f14,
       overflow: TextOverflow.ellipsis,
       fontWeight: FontWeight.w400,
       color: Color(0xff161F1B),
       decoration: TextDecoration.none,
     ),
     bodyMedium: TextStyle(
-      fontSize: 20,
+      fontSize: AppSize.f20,
       overflow: TextOverflow.ellipsis,
       fontWeight: FontWeight.w400,
       color: Color(0xff161F1B),
       decoration: TextDecoration.none,
     ),
-    labelMedium: TextStyle(fontSize: 20, color: Color(0xFF161F1B)),
+    labelMedium: TextStyle(fontSize: AppSize.f20, color: Color(0xFF161F1B)),
   ),
 
   inputDecorationTheme: InputDecorationTheme(
-    hintStyle: TextStyle(fontSize: 16, color: Color(0xFF9E9E9E)),
+    hintStyle: TextStyle(fontSize: AppSize.f16, color: Color(0xFF9E9E9E)),
     filled: true,
     fillColor: Color(0xFFFFFFFF),
     border: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(AppSize.r16),
       borderSide: BorderSide(color: Color(0xffD1DAD6)),
     ),
     disabledBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(AppSize.r16),
       borderSide: BorderSide(color: Color(0xffD1DAD6)),
     ),
     enabledBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(AppSize.r16),
       borderSide: BorderSide(color: Color(0xffD1DAD6)),
     ),
 
     focusedBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(AppSize.r16),
       borderSide: BorderSide(color: Color(0xffD1DAD6)),
     ),
     errorBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(AppSize.r16),
       borderSide: BorderSide(color: Colors.red),
     ),
   ),
   checkboxTheme: CheckboxThemeData(
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(AppSize.r4),
+    ),
     side: BorderSide(color: Color(0xFFD1DAD6), width: 2),
   ),
   iconTheme: IconThemeData(color: Color(0xff161F1B)),
@@ -154,8 +162,14 @@ ThemeData lightTheme = ThemeData(
     backgroundColor: Color(0xffF6F7F9),
     selectedItemColor: Color(0xff14A662),
     unselectedItemColor: Color(0xFF3A4640),
-    selectedLabelStyle: TextStyle(fontSize: 14, color: Color(0xFF14A662)),
-    unselectedLabelStyle: TextStyle(fontSize: 14, color: Color(0xFF3A4640)),
+    selectedLabelStyle: TextStyle(
+      fontSize: AppSize.f14,
+      color: Color(0xFF14A662),
+    ),
+    unselectedLabelStyle: TextStyle(
+      fontSize: AppSize.f14,
+      color: Color(0xFF3A4640),
+    ),
   ),
   textButtonTheme: TextButtonThemeData(
     style: ButtonStyle(foregroundColor: WidgetStateProperty.all(Colors.black)),
@@ -167,10 +181,14 @@ ThemeData lightTheme = ThemeData(
     color: Color(0xFFF6F7F9),
     shape: RoundedRectangleBorder(
       side: BorderSide(color: Color(0xff15B86C), width: 1),
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(AppSize.r16),
     ),
     labelTextStyle: WidgetStateProperty.all(
-      TextStyle(fontSize: 20, fontWeight: FontWeight.w400, color: Colors.black),
+      TextStyle(
+        fontSize: AppSize.f20,
+        fontWeight: FontWeight.w400,
+        color: Colors.black,
+      ),
     ),
   ),
 );

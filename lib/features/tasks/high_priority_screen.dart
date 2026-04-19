@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_app/core/constant/app_size.dart';
 import 'package:todo_app/features/tasks/tasks_controller.dart';
 
 import 'package:todo_app/core/components/task_list_widget.dart';
@@ -15,7 +16,7 @@ class HighPriorityScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text('High Priority')),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding:  EdgeInsets.all(AppSize.w16),
         child: Consumer<TasksController>(
           builder: (context, TasksController valuecontroller,Widget? child) {
             return TaskListWidget(

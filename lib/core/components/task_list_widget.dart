@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/core/constant/app_size.dart';
 import 'package:todo_app/models/task_model.dart';
 import 'package:todo_app/core/components/custom_task_item.dart';
 
@@ -34,9 +35,9 @@ class TaskListWidget extends StatelessWidget {
             physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             itemCount: task.length,
-            padding: EdgeInsets.only(bottom: 50),
+            padding: EdgeInsets.only(bottom: AppSize.h48),
             separatorBuilder: (BuildContext context, int index) {
-              return SizedBox(height: 8);
+              return SizedBox(height: AppSize.h8);
             },
 
             itemBuilder: (BuildContext context, int index) {

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:todo_app/core/constant/app_size.dart';
 import 'package:todo_app/core/constant/storage_key.dart';
 import 'package:todo_app/core/services/preferences_manager.dart';
 import 'package:todo_app/core/theme/theme_controler.dart';
@@ -23,7 +24,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String? userImagePath;
 
   bool isLoading = true;
-  bool isDark = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserName();
+  }
 
   void _loadUserName() async {
     setState(() {
@@ -37,23 +43,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    _loadUserName();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return isLoading
         ? CircularProgressIndicator()
         : Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(AppSize.w16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Center(
                   child: Padding(
-                    padding: EdgeInsets.all(18.0),
+                    padding: EdgeInsets.all(AppSize.w20),
                     child: Text(
                       'My Profile',
                       style: Theme.of(context).textTheme.bodyMedium,
@@ -61,7 +61,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
 
-                Center( 
+                Center(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -69,7 +69,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         alignment: AlignmentGeometry.bottomRight,
                         children: [
                           CircleAvatar(
-                            radius: 60,
+                            radius: AppSize.r60,
                             backgroundImage: userImagePath == null
                                 ? AssetImage('assets/images/profile.png')
                                 : FileImage(File(userImagePath!)),
@@ -86,10 +86,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               }));
                             },
                             child: Container(
-                              width: 34,
-                              height: 34,
+                              width: AppSize.w32,
+                              height: AppSize.h32,
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(100),
+                                borderRadius: BorderRadius.circular(
+                                  AppSize.r100,
+                                ),
                                 color: Theme.of(
                                   context,
                                 ).colorScheme.primaryContainer,
@@ -99,10 +101,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 6),
+                      SizedBox(height: AppSize.h4),
                       Text(
                         userName,
                         style: Theme.of(context).textTheme.bodyMedium,
+
+                        maxLines: 1,
                       ),
 
                       Text(
@@ -112,12 +116,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ],
                   ),
                 ),
-                SizedBox(height: 24),
+                SizedBox(height: AppSize.h24),
                 Text(
                   'Profile Info',
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
-                SizedBox(height: 8),
+                SizedBox(height: AppSize.h8),
                 ListTile(
                   onTap: () async {
                     final result = await Navigator.push(
@@ -158,15 +162,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                   trailing: ValueListenableBuilder(
-                    valueListenable: ThemeControler.themeNotifier,
+                    valueListenable: ThemeController.themeNotifier,
                     builder: (context, value, child) {
                       return Switch(
-                        value: isDark,
-                        onChanged: (value) {
-                          isDark =
-                              ThemeControler.themeNotifier.value ==
-                              ThemeMode.light;
-                          ThemeControler().toggelTheme();
+                        value: value == ThemeMode.dark,
+                        onChanged: (value) async {
+                          ThemeController.toggleTheme();
                         },
                       );
                     },
@@ -198,7 +199,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   trailing: Icon(Icons.arrow_forward),
                 ),
-                SizedBox(width: 16),
+                SizedBox(width: AppSize.w16),
               ],
             ),
           );
@@ -232,7 +233,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: Row(
               children: [
                 Icon(Icons.camera_alt),
-                SizedBox(width: 8),
+                SizedBox(width: AppSize.w8),
                 Text('Camera', style: Theme.of(context).textTheme.titleMedium),
               ],
             ),
@@ -251,7 +252,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: Row(
               children: [
                 Icon(Icons.photo_library),
-                SizedBox(width: 8),
+                SizedBox(width: AppSize.w8),
                 Text('Galary', style: Theme.of(context).textTheme.titleMedium),
               ],
             ),
@@ -288,10 +289,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
             itemCount: 7,
             itemBuilder: (BuildContext context, int index) {
               return Padding(
-                padding: EdgeInsetsGeometry.all(18),
+                padding: EdgeInsetsGeometry.all(AppSize.w20),
                 child: Container(
                   width: MediaQuery.of(context).size.width,
-                  height: 50,
+                  height: AppSize.h48,
                   color: Colors.deepOrange,
                 ),
               );

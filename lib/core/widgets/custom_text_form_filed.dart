@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/core/constant/app_size.dart';
 
 // ignore: must_be_immutable
 class CustomTextFormFiled extends StatelessWidget {
@@ -23,7 +24,7 @@ class CustomTextFormFiled extends StatelessWidget {
 
       children: [
         Text(title, style: Theme.of(context).textTheme.titleMedium),
-        SizedBox(height: 8),
+        SizedBox(height: AppSize.h8),
         TextFormField(
           controller: controller,
           validator: validator,
